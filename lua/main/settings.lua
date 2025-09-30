@@ -19,61 +19,61 @@ o.ignorecase = true
 o.smartcase = true
 o.hlsearch = true
 
- -- Disable mouse mode
- o.mouse = ''
+-- Disable mouse mode
+o.mouse = ""
 
- -- DO NOT sync clipboard between OS and Neovim.
- --  See `:help 'clipboard'`
- o.clipboard = ''
+-- DO NOT sync clipboard between OS and Neovim.
+--  See `:help 'clipboard'`
+o.clipboard = ""
 
- -- Disable break indent
- o.breakindent = false
+-- Disable break indent
+o.breakindent = false
 
 -- Used for wrapping during text formatting
 o.textwidth = 120
 
 -- Show vertical ruler on column 120
-vim.opt.colorcolumn = { '120' }
+vim.opt.colorcolumn = { "120" }
 
 -- Don't automatically insert linebreaks
-vim.opt.formatoptions:remove { 't' }
+vim.opt.formatoptions:remove({ "t" })
 
 -- Configure how new splits should be opened
 o.splitright = true
 o.splitbelow = true
 
- -- Keep signcolumn on by default
- vim.wo.signcolumn = 'yes'
+-- Keep signcolumn on by default
+vim.wo.signcolumn = "yes"
 
- -- Decrease update time
- o.updatetime = 250
- o.timeoutlen = 300
+-- Decrease update time
+o.updatetime = 250
+o.timeoutlen = 300
 
- -- Set completeopt to have a better completion experience
- o.completeopt = 'menuone,noselect'
+-- Set completeopt to have a better completion experience
+o.completeopt = "menuone,noselect"
 
- -- NOTE: You should make sure your terminal supports this
- o.termguicolors = true
+-- NOTE: You should make sure your terminal supports this
+o.termguicolors = true
 
- -- Set border for floating windows
- o.winborder = 'rounded'
+-- Set border for floating windows
+o.winborder = "rounded"
 
- -- Use some fun characters when displaying invisibles
+-- Use some fun characters when displaying invisibles
 vim.opt.listchars = {
-   eol = '↲',
-   space = '⋅',
-   trail = '•',
-   tab = '⇄ ',
- }
+	eol = "↲",
+	space = "⋅",
+	trail = "•",
+	tab = "⇄ ",
+}
 vim.opt.list = false
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.hl.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.hl.on_yank()
-  end,
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.hl.on_yank()
+	end,
 })

@@ -1,4 +1,4 @@
- -- "gc" to comment visual regions/lines
- -- https://github.com/numToStr/Comment.nvim
+-- "gc" to comment visual regions/lines
+-- https://github.com/numToStr/Comment.nvim
 
-return { 'numToStr/Comment.nvim', opts = {} }
+return { "numToStr/Comment.nvim", opts = {} }
