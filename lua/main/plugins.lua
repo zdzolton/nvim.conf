@@ -20,7 +20,7 @@ require("lazy").setup({
 		-- TODO: Uncomment these as I progress
 		{ import = "plugins" },
 		-- { import = "plugins/lsp" },
-		-- { import = "plugins/treesitter" },
+		{ import = "plugins/treesitter" },
 	},
 	install = {
 		missing = true,
