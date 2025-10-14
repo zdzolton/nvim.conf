@@ -48,12 +48,22 @@ return {
 			-- You can put your default mappings / updates / etc. in here
 			--  All the info you're looking for is in `:help telescope.setup()`
 			--
-			-- defaults = {
-			--   mappings = {
-			--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-			--   },
-			-- },
-			-- pickers = {}
+			defaults = {
+				layout_strategy = "vertical",
+				layout_config = { height = 0.95 },
+			},
+			pickers = {
+				find_files = {
+					find_command = {
+						"rg",  -- This requires `ripgrep`
+						"--files", -- List files only
+						"--hidden", -- Include hidden files
+						"--no-ignore-vcs", -- Do not respect .gitignore files from VCS (if you want to override this)
+						"-g",
+						"!**/.git/*", -- Exclude files within the .git directory
+					},
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
