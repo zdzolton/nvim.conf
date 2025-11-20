@@ -16,7 +16,18 @@ return {
 				-- set keybinds
 				-- show definition, references
 				opts.desc = "Show LSP references"
-				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+				keymap.set("n", "gr", function()
+					-- Temporarily suppress the position_encoding warning
+					local notify = vim.notify
+					vim.notify = function(msg, level, opts_notify)
+						if msg:match("position_encoding") then
+							return
+						end
+						notify(msg, level, opts_notify)
+					end
+					require("telescope.builtin").lsp_references()
+					vim.notify = notify
+				end, opts)
 
 				-- go to declaration
 				opts.desc = "Go to declaration"
