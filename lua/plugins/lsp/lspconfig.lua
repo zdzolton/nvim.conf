@@ -60,6 +60,7 @@ return {
 				-- show diagnostics for line
 				opts.desc = "Show line diagnostics"
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+				keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
 
 				-- jump to previous diagnostic in buffer
 				opts.desc = "Go to previous diagnostic"
@@ -90,7 +91,7 @@ return {
 		-- change diagnostic symbols in the sign column (gutter)
 		local x = vim.diagnostic.severity
 		vim.diagnostic.config({
-			virtual_text = { prefix = "" },
+			virtual_text = false,
 			signs = {
 				text = {
 					[x.ERROR] = " ",
