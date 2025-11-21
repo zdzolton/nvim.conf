@@ -17,16 +17,7 @@ return {
 				-- show definition, references
 				opts.desc = "Show LSP references"
 				keymap.set("n", "gr", function()
-					-- Temporarily suppress the position_encoding warning
-					local notify = vim.notify
-					vim.notify = function(msg, level, opts_notify)
-						if msg:match("position_encoding") then
-							return
-						end
-						notify(msg, level, opts_notify)
-					end
 					require("telescope.builtin").lsp_references()
-					vim.notify = notify
 				end, opts)
 
 				-- go to declaration
@@ -59,7 +50,6 @@ return {
 
 				-- show diagnostics for line
 				opts.desc = "Show line diagnostics"
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 				keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
 
 				-- jump to previous diagnostic in buffer
