@@ -1,3 +1,6 @@
+-- Gross hack to ensure we only run the Java autocommand code once
+JdtlsSetup = false
+
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
@@ -139,6 +142,34 @@ return {
 					},
 				},
 			},
+		})
+
+		-- Delay Java initialization to avoid errors for unrelated file types:
+		-- https://github.com/nvim-java/nvim-java/issues/427
+		-- https://github.com/nvim-java/nvim-java/issues/293
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "java",
+			callback = function()
+				if JdtlsSetup then
+					return
+				end
+				require("java").setup()
+
+				-- java: configure jdtls via nvim-java
+				vim.lsp.config("jdtls", {
+					cmd = { vim.fn.exepath("jdtls") },
+					root_markers = {
+						"settings.gradle",
+						"settings.gradle.kts",
+						"pom.xml",
+						"build.gradle",
+						"build.gradle.kts",
+					},
+					filetypes = { "java" },
+					capabilities = capabilities,
+				})
+				JdtlsSetup = true
+			end,
 		})
 	end,
 }
