@@ -1,6 +1,3 @@
--- Gross hack to ensure we only run the Java autocommand code once
-JdtlsSetup = false
-
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
@@ -149,10 +146,8 @@ return {
 		-- https://github.com/nvim-java/nvim-java/issues/293
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "java",
+			once = true,
 			callback = function()
-				if JdtlsSetup then
-					return
-				end
 				require("java").setup()
 
 				-- java: configure jdtls via nvim-java
@@ -168,7 +163,6 @@ return {
 					filetypes = { "java" },
 					capabilities = capabilities,
 				})
-				JdtlsSetup = true
 			end,
 		})
 	end,
