@@ -148,20 +148,15 @@ return {
 			pattern = "java",
 			once = true,
 			callback = function()
-				require("java").setup()
-
-				-- java: configure jdtls via nvim-java
-				vim.lsp.config("jdtls", {
-					cmd = { vim.fn.exepath("jdtls") },
-					root_markers = {
-						"settings.gradle",
-						"settings.gradle.kts",
-						"pom.xml",
-						"build.gradle",
-						"build.gradle.kts",
+				-- nvim-java handles JDTLS configuration automatically.
+				-- It will call lspconfig.jdtls.setup() internally.
+				require("java").setup({
+					jdk = {
+						auto_install = false,
 					},
-					filetypes = { "java" },
-					capabilities = capabilities,
+					lsp = {
+						capabilities = capabilities,
+					},
 				})
 			end,
 		})
