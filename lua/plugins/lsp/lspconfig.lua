@@ -75,9 +75,6 @@ return {
 		-- enable snippet
 		capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-		-- enable inlay hint
-		vim.lsp.inlay_hint.enable(true, { 0 })
-
 		-- change diagnostic symbols in the sign column (gutter)
 		local x = vim.diagnostic.severity
 		vim.diagnostic.config({
