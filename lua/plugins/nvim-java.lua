@@ -30,15 +30,6 @@ return {
 					},
 					lsp = {
 						capabilities = capabilities,
-						settings = {
-							java = {
-								inlayHints = {
-									parameterNames = {
-										enabled = false,
-									},
-								},
-							},
-						},
 						on_attach = function(client, bufnr)
 							if client.server_capabilities.inlayHintProvider then
 								vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
