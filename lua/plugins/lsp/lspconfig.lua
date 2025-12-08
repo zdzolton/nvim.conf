@@ -104,10 +104,10 @@ return {
 			virtual_text = false,
 			signs = {
 				text = {
-					[x.ERROR] = "❌",
-					[x.WARN] = "⚠️",
-					[x.HINT] = "💡",
-					[x.INFO] = "ℹ️",
+					[x.ERROR] = "‼",
+					[x.WARN] = "⁉",
+					[x.HINT] = "◎",
+					[x.INFO] = "ℹ",
 				},
 			},
 			underline = true,
