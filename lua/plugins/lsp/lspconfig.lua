@@ -5,6 +5,18 @@ return {
 		"williamboman/mason.nvim",
 		"b0o/schemastore.nvim",
 	},
+	init = function()
+		-- jdtls: disable nvim-lspconfig's default config (we use nvim-jdtls instead)
+		-- This must run in init (not config) to prevent nvim-lspconfig from creating
+		-- a FileType autocmd for jdtls before we disable it
+		vim.lsp.config("jdtls", {
+			enabled = false,
+			cmd = { "true" }, -- No-op command to prevent it from starting
+			root_dir = function()
+				return nil
+			end, -- Never match any directory
+		})
+	end,
 	config = function()
 		local keymap = vim.keymap
 
@@ -167,5 +179,12 @@ return {
 				},
 			},
 		})
+
+		-- Enable all LSP servers explicitly
+		-- (since automatic_setup = false in mason-lspconfig)
+		local servers = { "html", "cssls", "jsonls", "lua_ls", "ts_ls", "eslint", "yamlls", "pyright", "bashls" }
+		for _, server in ipairs(servers) do
+			vim.lsp.enable(server)
+		end
 	end,
 }

@@ -16,6 +16,8 @@ return {
 		dependencies = { "williamboman/mason.nvim" },
 		opts = {
 			-- list of lsp for mason to install
+			-- Note: jdtls is NOT in this list - it's installed via mason-tool-installer
+			-- to avoid mason-lspconfig from auto-configuring it
 			ensure_installed = {
 				"html",
 				"cssls",
@@ -27,6 +29,8 @@ return {
 				"pyright",
 				"bashls",
 			},
+			-- Disable automatic server setup (we'll configure servers explicitly in lspconfig.lua)
+			automatic_setup = false,
 		},
 	},
 	{
@@ -35,6 +39,7 @@ return {
 		opts = {
 			-- list of formatter and linter for mason to install
 			ensure_installed = {
+				"jdtls", -- java language server (configured by nvim-jdtls, not mason-lspconfig)
 				"prettierd", -- prettierd formatter
 				"stylua", -- lua formatter
 				"isort", -- python formatter
