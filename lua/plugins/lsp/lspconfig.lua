@@ -81,27 +81,31 @@ return {
 				keymap.set("n", "<leader>rs", "<cmd>LspRestart<CR>", opts)
 
 				-- show signature help automatically when typing ( or ,
-				vim.api.nvim_create_autocmd("TextChangedI", {
-					buffer = ev.buf,
-					callback = function()
-						local line = vim.api.nvim_get_current_line()
-						local col = vim.api.nvim_win_get_cursor(0)[2]
-						-- Check both the character at cursor and after cursor
-						-- because cursor position behavior can vary between LSP servers
-						local char_at = col > 0 and line:sub(col, col) or ""
-						local char_after = col < #line and line:sub(col + 1, col + 1) or ""
+				-- (disabled for bashls as it doesn't work well)
+				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				if client and client.name ~= "bashls" then
+					vim.api.nvim_create_autocmd("TextChangedI", {
+						buffer = ev.buf,
+						callback = function()
+							local line = vim.api.nvim_get_current_line()
+							local col = vim.api.nvim_win_get_cursor(0)[2]
+							-- Check both the character at cursor and after cursor
+							-- because cursor position behavior can vary between LSP servers
+							local char_at = col > 0 and line:sub(col, col) or ""
+							local char_after = col < #line and line:sub(col + 1, col + 1) or ""
 
-						if char_at == "(" or char_at == "," or char_after == "(" or char_after == "," then
-							-- Use a longer delay for slower LSP servers like JDTLS
-							-- Also schedule during an event loop tick to ensure LSP has processed the change
-							vim.schedule(function()
-								vim.defer_fn(function()
-									vim.lsp.buf.signature_help()
-								end, 150)
-							end)
-						end
-					end,
-				})
+							if char_at == "(" or char_at == "," or char_after == "(" or char_after == "," then
+								-- Use a longer delay for slower LSP servers like JDTLS
+								-- Also schedule during an event loop tick to ensure LSP has processed the change
+								vim.schedule(function()
+									vim.defer_fn(function()
+										vim.lsp.buf.signature_help()
+									end, 150)
+								end)
+							end
+						end,
+					})
+				end
 			end,
 		})
 
