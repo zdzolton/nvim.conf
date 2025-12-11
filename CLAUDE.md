@@ -2,6 +2,13 @@
 
 This document provides guidelines for Claude Code when editing Lua files in this Neovim configuration repository.
 
+## Quick Reference
+
+Before editing any Lua file:
+- [ ] Read the file first to see exact indentation
+- [ ] Use TAB characters (not spaces) when matching indentation
+- [ ] Run stylua after editing: `~/.local/share/nvim/mason/bin/stylua <file_path>`
+
 ## Code Formatting
 
 After making any edits to Lua files in this repository, you must format them using `stylua`. This project uses `stylua` as its Lua formatter, which is installed via Mason (`WhoIsSethDaniel/mason-tool-installer.nvim`).
@@ -13,6 +20,16 @@ Run this command after editing any `.lua` files:
 ```bash
 ~/.local/share/nvim/mason/bin/stylua <file_path>
 ```
+
+### Indentation
+
+**IMPORTANT**: All Lua files in this repository use TAB characters (not spaces) for indentation.
+
+When using the Edit tool:
+- Always preserve exact indentation from Read tool output
+- The line numbers in Read output are followed by a tab character before the actual file content
+- Match TAB characters exactly - do not convert to spaces
+- After editing, stylua will normalize indentation automatically
 
 ### Example Workflow
 
