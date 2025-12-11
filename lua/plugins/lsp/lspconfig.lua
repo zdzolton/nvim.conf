@@ -179,6 +179,10 @@ return {
 				},
 			},
 		})
+		-- bashls: also enable for zsh files
+		vim.lsp.config("bashls", {
+			filetypes = { "sh", "bash", "zsh" },
+		})
 
 		-- Enable all LSP servers explicitly
 		-- (since automatic_setup = false in mason-lspconfig)
