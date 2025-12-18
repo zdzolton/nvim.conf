@@ -76,3 +76,22 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank()
 	end,
 })
+
+-- OpenAPI/Swagger filetype detection
+-- This enables vacuum LSP and specific schema validation for OpenAPI files
+vim.filetype.add({
+	pattern = {
+		-- Match files with 'openapi' in the name
+		["openapi.*%.ya?ml"] = "yaml.openapi",
+		["openapi.*%.json"] = "json.openapi",
+		-- Match files in openapi directories
+		[".*/openapi/.*%.ya?ml"] = "yaml.openapi",
+		[".*/openapi/.*%.json"] = "json.openapi",
+		-- Match files in api-specs directories
+		[".*/api%-specs/.*%.ya?ml"] = "yaml.openapi",
+		[".*/api%-specs/.*%.json"] = "json.openapi",
+		-- Match swagger files
+		["swagger.*%.ya?ml"] = "yaml.openapi",
+		["swagger.*%.json"] = "json.openapi",
+	},
+})

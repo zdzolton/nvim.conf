@@ -45,6 +45,8 @@ return {
 			java = { "google-java-format" },
 			python = { "macchiato", "isort" },
 			xml = { "tidy_xml" },
+			yaml = { "prettierd" },
+			["yaml.openapi"] = { "prettierd" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },
 			--

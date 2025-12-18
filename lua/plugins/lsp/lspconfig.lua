@@ -187,10 +187,63 @@ return {
 		vim.lsp.config("bashls", {
 			filetypes = { "sh", "bash", "zsh" },
 		})
+		-- yamlls: validate using schemas from schemastore
+		vim.lsp.config("yamlls", {
+			filetypes = { "yaml", "yaml.openapi" },
+			settings = {
+				yaml = {
+					schemaStore = {
+						-- Disable built-in schemaStore to use schemastore.nvim
+						enable = false,
+						url = "",
+					},
+					-- Use schemastore with custom fileMatch patterns for OpenAPI
+					-- Default to OpenAPI 3.0 schema (most common version)
+					-- For OpenAPI 3.1 files, add this comment at the top:
+					-- # yaml-language-server: $schema=https://spec.openapis.org/oas/3.1/schema/2025-09-15
+					schemas = require("schemastore").yaml.schemas({
+						replace = {
+							-- Override openapi.json schema to match our file patterns
+							["openapi.json"] = {
+								name = "openapi.json",
+								description = "OpenAPI 3.0 Specification",
+								fileMatch = {
+									"openapi.yaml",
+									"openapi.yml",
+									"openapi.json",
+									"**/openapi/**/*.yaml",
+									"**/openapi/**/*.yml",
+									"**/openapi/**/*.json",
+									"**/api-specs/**/*.yaml",
+									"**/api-specs/**/*.yml",
+									"**/api-specs/**/*.json",
+									"swagger*.yaml",
+									"swagger*.yml",
+									"swagger*.json",
+								},
+								url = "https://spec.openapis.org/oas/3.0/schema/2024-10-18",
+							},
+						},
+					}),
+					validate = true,
+					format = { enable = false }, -- Use prettierd via conform.nvim instead
+					hover = true,
+					completion = true,
+				},
+			},
+		})
+		-- vacuum: OpenAPI/Swagger linter and quality analysis
+		vim.lsp.config("vacuum", {
+			cmd = { "vacuum", "language-server" },
+			filetypes = { "yaml.openapi", "json.openapi" },
+			root_markers = { ".git" },
+			single_file_support = true,
+		})
 
 		-- Enable all LSP servers explicitly
 		-- (since automatic_setup = false in mason-lspconfig)
-		local servers = { "html", "cssls", "jsonls", "lua_ls", "ts_ls", "eslint", "yamlls", "pyright", "bashls" }
+		local servers =
+			{ "html", "cssls", "jsonls", "lua_ls", "ts_ls", "eslint", "yamlls", "pyright", "bashls", "vacuum" }
 		for _, server in ipairs(servers) do
 			vim.lsp.enable(server)
 		end
