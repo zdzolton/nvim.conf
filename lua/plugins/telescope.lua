@@ -58,7 +58,6 @@ return {
 						"rg", -- This requires `ripgrep`
 						"--files", -- List files only
 						"--hidden", -- Include hidden files
-						"--no-ignore-vcs", -- Do not respect .gitignore files from VCS (if you want to override this)
 						"-g",
 						"!**/.git/*", -- Exclude files within the .git directory
 					},
