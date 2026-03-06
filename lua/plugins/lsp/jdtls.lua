@@ -27,6 +27,16 @@ local function setup_jdtls()
 	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 	local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
 
+	-- Build bundles for java-debug
+	local bundles = {}
+	local debug_jar = vim.fn.glob(
+		vim.fn.stdpath("data")
+			.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
+	)
+	if debug_jar ~= "" then
+		vim.list_extend(bundles, vim.split(debug_jar, "\n"))
+	end
+
 	-- JDTLS configuration
 	local config = {
 		cmd = {
@@ -51,6 +61,10 @@ local function setup_jdtls()
 		},
 		root_dir = jdtls.setup.find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
 		capabilities = capabilities,
+		on_attach = function(_, _)
+			jdtls.setup_dap({ hotcodereplace = "auto" })
+			require("jdtls.dap").setup_dap_main_class_configs()
+		end,
 		settings = {
 			java = {
 				signatureHelp = { enabled = true },
@@ -77,7 +91,7 @@ local function setup_jdtls()
 			},
 		},
 		init_options = {
-			bundles = {},
+			bundles = bundles,
 		},
 	}
 

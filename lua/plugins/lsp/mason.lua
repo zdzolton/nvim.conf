@@ -40,6 +40,7 @@ return {
 			-- list of formatter and linter for mason to install
 			ensure_installed = {
 				"jdtls", -- java language server (configured by nvim-jdtls, not mason-lspconfig)
+				"java-debug-adapter", -- java debug adapter for nvim-dap
 				"prettierd", -- prettierd formatter
 				"stylua", -- lua formatter
 				"isort", -- python formatter
