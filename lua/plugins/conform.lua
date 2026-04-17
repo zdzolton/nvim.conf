@@ -24,6 +24,9 @@ return {
 		notify_on_error = false,
 		format_on_save = nil, -- Do NOT format when saving a buffer
 		formatters = {
+			shfmt = {
+				prepend_args = { "-ln", "bash" },
+			},
 			isort = {
 				prepend_args = { "-l", "1000000", "--wl", "0", "--sl" },
 			},
@@ -47,6 +50,9 @@ return {
 			xml = { "tidy_xml" },
 			yaml = { "prettierd" },
 			["yaml.openapi"] = { "prettierd" },
+			sh = { "shfmt" },
+			bash = { "shfmt" },
+			zsh = { "beautysh" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },
 			--

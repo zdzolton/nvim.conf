@@ -47,6 +47,7 @@ return {
 				"black", -- python formatter
 				"pylint", -- python linter
 				"shfmt", -- sh formatter with bash support
+				"beautysh", -- zsh formatter
 				"vacuum", -- openapi linter (may require manual install if Mason fails)
 			},
 		},
