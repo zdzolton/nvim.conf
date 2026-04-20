@@ -3,6 +3,13 @@
 
 return {
 	"nvim-treesitter/nvim-treesitter-context",
-	event = "VeryLazy",
+	dependencies = { "nvim-treesitter/nvim-treesitter" },
+	event = "BufReadPost",
 	enabled = true,
+	opts = {
+		max_lines = "15%",
+		mode = "topline",
+		multiline_threshold = 1,
+		trim_scope = "inner",
+	},
 }

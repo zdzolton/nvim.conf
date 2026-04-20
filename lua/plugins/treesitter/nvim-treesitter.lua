@@ -7,6 +7,9 @@ return {
 	event = "VeryLazy",
 	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 	lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+	config = function(_, opts)
+		require("nvim-treesitter.configs").setup(opts)
+	end,
 	opts = {
 		highlight = { enable = true },
 		indent = { enable = true },
