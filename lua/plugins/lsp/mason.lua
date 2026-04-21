@@ -28,6 +28,7 @@ return {
 				"lua_ls",
 				"pyright",
 				"bashls",
+				"intelephense",
 			},
 			-- Disable automatic server setup (we'll configure servers explicitly in lspconfig.lua)
 			automatic_setup = false,

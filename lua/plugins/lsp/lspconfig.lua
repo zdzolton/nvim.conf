@@ -242,8 +242,19 @@ return {
 
 		-- Enable all LSP servers explicitly
 		-- (since automatic_setup = false in mason-lspconfig)
-		local servers =
-			{ "html", "cssls", "jsonls", "lua_ls", "ts_ls", "eslint", "yamlls", "pyright", "bashls", "vacuum" }
+		local servers = {
+			"html",
+			"cssls",
+			"jsonls",
+			"lua_ls",
+			"ts_ls",
+			"eslint",
+			"yamlls",
+			"pyright",
+			"bashls",
+			"vacuum",
+			"intelephense",
+		}
 		for _, server in ipairs(servers) do
 			vim.lsp.enable(server)
 		end
