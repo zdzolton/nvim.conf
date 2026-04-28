@@ -15,10 +15,11 @@ local function setup_jdtls()
 		return
 	end
 
-	-- Determine OS-specific config
+	-- Determine OS-specific config (ARM Macs need config_mac_arm for the correct launcher fragment)
 	local os_config = "linux"
 	if vim.fn.has("mac") == 1 then
-		os_config = "mac"
+		local arch = vim.uv.os_uname().machine
+		os_config = (arch == "arm64") and "mac_arm" or "mac"
 	elseif vim.fn.has("win32") == 1 then
 		os_config = "win"
 	end
@@ -46,7 +47,7 @@ local function setup_jdtls()
 			"-Declipse.product=org.eclipse.jdt.ls.core.product",
 			"-Dlog.protocol=true",
 			"-Dlog.level=ALL",
-			"-Xmx1g",
+			"-Xmx2g",
 			"--add-modules=ALL-SYSTEM",
 			"--add-opens",
 			"java.base/java.util=ALL-UNNAMED",
