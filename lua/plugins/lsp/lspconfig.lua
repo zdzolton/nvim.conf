@@ -240,6 +240,12 @@ return {
 			single_file_support = true,
 		})
 
+		-- apex_ls: Salesforce Apex Language Server (installed via mason-tool-installer)
+		vim.lsp.config("apex_ls", {
+			apex_jar_path = vim.fn.stdpath("data") .. "/mason/share/apex-language-server/apex-jorje-lsp.jar",
+			salesforce_project_root_markers = { "sfdx-project.json" },
+		})
+
 		-- Enable all LSP servers explicitly
 		-- (since automatic_setup = false in mason-lspconfig)
 		local servers = {
@@ -254,6 +260,7 @@ return {
 			"bashls",
 			"vacuum",
 			"intelephense",
+			"apex_ls",
 		}
 		for _, server in ipairs(servers) do
 			vim.lsp.enable(server)
