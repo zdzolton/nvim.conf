@@ -24,6 +24,9 @@ return {
 		notify_on_error = false,
 		format_on_save = nil, -- Do NOT format when saving a buffer
 		formatters = {
+			sql_formatter = {
+				prepend_args = { "--language", "mysql" },
+			},
 			shfmt = {
 				prepend_args = { "-ln", "bash" },
 			},
@@ -53,6 +56,7 @@ return {
 			sh = { "shfmt" },
 			bash = { "shfmt" },
 			zsh = { "beautysh" },
+			sql = { "sql_formatter" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },
 			--

@@ -51,6 +51,7 @@ return {
 				"beautysh", -- zsh formatter
 				"vacuum", -- openapi linter (may require manual install if Mason fails)
 				"apex-language-server", -- salesforce apex language server
+				"sql-formatter", -- sql formatter
 			},
 		},
 	},
