@@ -197,34 +197,15 @@ return {
 						enable = false,
 						url = "",
 					},
-					-- Use schemastore with custom fileMatch patterns for OpenAPI
-					-- Default to OpenAPI 3.0 schema (most common version)
-					-- For OpenAPI 3.1 files, add this comment at the top:
+					-- No custom OpenAPI schema mapping here on purpose: fragment files
+					-- (schemas/, paths/, etc.) get validated as full OpenAPI documents or
+					-- not depending on directory conventions that vary per repo, so any
+					-- single fileMatch rule is wrong for someone. OpenAPI/AsyncAPI-aware,
+					-- $ref-graph-aware linting is delegated to vacuum instead; yamlls just
+					-- does generic YAML syntax checking for these files.
+					-- Per-file override still works if a spec needs it:
 					-- # yaml-language-server: $schema=https://spec.openapis.org/oas/3.1/schema/2025-09-15
-					schemas = require("schemastore").yaml.schemas({
-						replace = {
-							-- Override openapi.json schema to match our file patterns
-							["openapi.json"] = {
-								name = "openapi.json",
-								description = "OpenAPI 3.0 Specification",
-								fileMatch = {
-									"openapi.yaml",
-									"openapi.yml",
-									"openapi.json",
-									"**/openapi/**/*.yaml",
-									"**/openapi/**/*.yml",
-									"**/openapi/**/*.json",
-									"**/api-specs/**/*.yaml",
-									"**/api-specs/**/*.yml",
-									"**/api-specs/**/*.json",
-									"swagger*.yaml",
-									"swagger*.yml",
-									"swagger*.json",
-								},
-								url = "https://spec.openapis.org/oas/3.0/schema/2024-10-18",
-							},
-						},
-					}),
+					schemas = require("schemastore").yaml.schemas(),
 					validate = true,
 					format = { enable = false }, -- Use prettierd via conform.nvim instead
 					hover = true,
