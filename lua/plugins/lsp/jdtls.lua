@@ -1,3 +1,12 @@
+local JDTLS_WORKSPACE_EXIT_CODE = 13
+
+local function workspace_dir_for_cwd()
+	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+	return vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
+end
+
+local reset_workspace
+
 local function setup_jdtls()
 	local jdtls = require("jdtls")
 
@@ -25,8 +34,7 @@ local function setup_jdtls()
 	end
 
 	-- Workspace directory - separate workspace per project
-	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-	local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
+	local workspace_dir = workspace_dir_for_cwd()
 
 	-- Build bundles for java-debug
 	local bundles = {}
@@ -62,6 +70,19 @@ local function setup_jdtls()
 		},
 		root_dir = jdtls.setup.find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
 		capabilities = capabilities,
+		-- Exit code 13 has other causes (lock, bad Java), so ask before deleting anything.
+		on_exit = function(code)
+			if code ~= JDTLS_WORKSPACE_EXIT_CODE then
+				return
+			end
+			vim.schedule(function()
+				local dir = workspace_dir_for_cwd()
+				local msg = "jdtls exited with code 13. Check " .. dir .. "/.metadata/.log\nReset the workspace?"
+				if vim.fn.confirm(msg, "&Yes\n&No", 2) == 1 then
+					reset_workspace()
+				end
+			end)
+		end,
 		on_attach = function(_, _)
 			jdtls.setup_dap({ hotcodereplace = "auto" })
 			require("jdtls.dap").setup_dap_main_class_configs()
@@ -100,6 +121,28 @@ local function setup_jdtls()
 	jdtls.start_or_attach(config)
 end
 
+--- Stops jdtls, deletes the workspace cache for the current directory, and starts jdtls again.
+reset_workspace = function()
+	local dir = workspace_dir_for_cwd()
+	for _, client in ipairs(vim.lsp.get_clients({ name = "jdtls" })) do
+		client:stop(true)
+	end
+	-- Stopping is async. Deleting while jdtls still runs could corrupt the cache again.
+	vim.wait(5000, function()
+		return #vim.lsp.get_clients({ name = "jdtls" }) == 0
+	end, 50)
+	if #vim.lsp.get_clients({ name = "jdtls" }) > 0 then
+		vim.notify("jdtls did not stop. Workspace not deleted.", vim.log.levels.ERROR)
+		return
+	end
+	if vim.fn.delete(dir, "rf") ~= 0 then
+		vim.notify("Could not delete " .. dir, vim.log.levels.ERROR)
+		return
+	end
+	vim.notify("Deleted " .. dir .. ". Restarting jdtls.")
+	setup_jdtls()
+end
+
 return {
 	"mfussenegger/nvim-jdtls",
 	ft = "java",
@@ -107,6 +150,13 @@ return {
 		"neovim/nvim-lspconfig",
 	},
 	config = function()
+		vim.api.nvim_create_user_command("JdtlsReset", function()
+			local dir = workspace_dir_for_cwd()
+			if vim.fn.confirm("Delete " .. dir .. " and restart jdtls?", "&Yes\n&No", 2) == 1 then
+				reset_workspace()
+			end
+		end, { desc = "Delete the jdtls workspace cache for the cwd and restart jdtls" })
+
 		-- Delay JDTLS initialization to avoid errors for unrelated file types
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "java",
